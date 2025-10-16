@@ -1,10 +1,10 @@
-import { SanityDocument } from '@sanity/client'
 import { WarningOutlineIcon } from '@sanity/icons'
 import { Box, Card, Flex, Stack, Text } from '@sanity/ui'
 import React, { forwardRef } from 'react'
+import { ObjectInputProps } from 'sanity'
 
-type Props = {
-  document: SanityDocument
+type Props = ObjectInputProps & {
+  value?: any
 }
 
 const ProductVariantHiddenInput = forwardRef<HTMLDivElement, Props>((props, ref) => {
@@ -28,5 +28,7 @@ const ProductVariantHiddenInput = forwardRef<HTMLDivElement, Props>((props, ref)
     </Card>
   )
 })
+
+ProductVariantHiddenInput.displayName = 'ProductVariantHiddenInput'
 
 export default ProductVariantHiddenInput

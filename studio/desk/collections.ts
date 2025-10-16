@@ -1,9 +1,10 @@
-import S from '@sanity/desk-tool/structure-builder'
+import { StructureBuilder } from 'sanity/structure'
 
-// prettier-ignore
-export const collections = S.listItem()
-  .title('Collections')
-  .schemaType('collection')
-  .child(
-    S.documentTypeList('collection')
-  )
+export const collections = (S: StructureBuilder) =>
+  S.listItem()
+    .title('Collections')
+    .schemaType('collection')
+    .child(
+      S.documentTypeList('collection')
+        .title('Collections')
+    )

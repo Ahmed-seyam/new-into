@@ -1,11 +1,12 @@
-import S from '@sanity/desk-tool/structure-builder';
-import { DocumentsIcon } from '@sanity/icons';
+import { DocumentsIcon } from '@sanity/icons'
+import { StructureBuilder } from 'sanity/structure'
 
-// prettier-ignore
-export const articles = S.listItem()
-  .title('Articles')
-  .icon(DocumentsIcon)
-  .schemaType('article')
-  .child(
-    S.documentTypeList('article')
-  )
+export const articles = (S: StructureBuilder) =>
+  S.listItem()
+    .title('Articles')
+    .icon(DocumentsIcon)
+    .schemaType('article')
+    .child(
+      S.documentTypeList('article')
+        .title('Articles')
+    )

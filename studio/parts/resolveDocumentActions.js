@@ -1,83 +1,56 @@
-// Default document actions
-import defaultResolve, {
-  CreateAction,
-  DeleteAction,
-  DuplicateAction,
-  UnpublishAction
-} from 'part:@sanity/base/document-actions'
-import { LOCKED_DOCUMENT_IDS, LOCKED_DOCUMENT_TYPES } from '../constants'
-import deleteCollection from '../documentActions/deleteCollection'
-import deleteProductAndVariants from '../documentActions/deleteProductAndVariants'
-import shopifyLink from '../documentActions/shopifyLink'
+// parts/resolveDocumentActions.js
+import { LOCKED_DOCUMENT_IDS, LOCKED_DOCUMENT_TYPES } from '../constants';
+import deleteCollection from '../documentActions/deleteCollection';
+import deleteProductAndVariants from '../documentActions/deleteProductAndVariants';
+import shopifyLink from '../documentActions/shopifyLink';
 
-export default function resolveDocumentActions(props) {
-  return [
-    // Start with Sanity's default actions
-    ...defaultResolve(props)
-      // Filter out actions by document type
-      .filter(action => {
-        // Prevent creation & deletion on certain document types
-        if (LOCKED_DOCUMENT_TYPES.includes(props.type)) {
-          if ([DeleteAction, DuplicateAction, UnpublishAction].includes(action)) {
-            return false
-          }
-        }
+export default function resolveDocumentActions(prev, context) {
+  const { type, id } = context;
 
-        // Prevent creation & deletion on certain document ids (singletons)
-        if (LOCKED_DOCUMENT_IDS.includes(props.id)) {
-          if ([DeleteAction, DuplicateAction, UnpublishAction].includes(action)) {
-            return false
-          }
-        }
+  // Filter out actions based on document type and ID
+  const filteredActions = prev.filter(action => {
+    const actionName = action.action;
 
-        // Collections:
-        // - Disable creation and duplication
-        if (props.type === 'collection') {
-          if ([CreateAction, DuplicateAction].includes(action)) {
-            return false
-          }
-        }
+    if (
+      LOCKED_DOCUMENT_TYPES.includes(type) &&
+      ['delete', 'duplicate', 'unpublish'].includes(actionName)
+    ) {
+      return false;
+    }
 
-        // Products:
-        // - Disable creation and duplication
-        if (props.type === 'product') {
-          if ([CreateAction, DuplicateAction].includes(action)) {
-            return false
-          }
-        }
+    if (
+      LOCKED_DOCUMENT_IDS.includes(id) &&
+      ['delete', 'duplicate', 'unpublish'].includes(actionName)
+    ) {
+      return false;
+    }
 
-        // Product variants:
-        // - Disable creation, duplication and unpublishing
-        // - Enable delete button only if variant has been marked for deletion
-        if (props.type === 'productVariant') {
-          if ([CreateAction, DuplicateAction, UnpublishAction].includes(action)) {
-            return false
-          }
+    if (type === 'collection' && ['create', 'duplicate'].includes(actionName)) {
+      return false;
+    }
 
-          if (action === DeleteAction) {
-            if (props?.published?.store?.isDeleted) {
-              return true
-            }
-            return false
-          }
-        }
+    if (type === 'product' && ['create', 'duplicate'].includes(actionName)) {
+      return false;
+    }
 
-        return true
-      })
-      // Override any built-in actions with our own
-      .map(action => {
-        // Collections: replace default delete action
-        if (props.type === 'collection' && action === DeleteAction) {
-          return deleteCollection
-        }
-        // Products: replace default delete action
-        if (props.type === 'product' && action === DeleteAction) {
-          return deleteProductAndVariants
-        }
+    if (type === 'productVariant' && ['create', 'duplicate', 'unpublish'].includes(actionName)) {
+      return false;
+    }
 
-        return action
-      }),
-    // Add our own custom actions
-    shopifyLink
-  ]
+    return true;
+  });
+
+  // Replace specific delete actions with custom handlers
+  const modifiedActions = filteredActions.map(action => {
+    if (type === 'collection' && action.action === 'delete') {
+      return deleteCollection;
+    }
+    if (type === 'product' && action.action === 'delete') {
+      return deleteProductAndVariants;
+    }
+    return action;
+  });
+
+  // Add the shopifyLink action
+  return [...modifiedActions, shopifyLink];
 }

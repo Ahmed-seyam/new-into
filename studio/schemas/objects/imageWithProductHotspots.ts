@@ -24,7 +24,7 @@ export default {
       name: 'productHotspots',
       title: 'Product hotspots',
       type: 'productHotspots',
-      hidden: ({ parent }) => !parent.showHotspots
+      hidden: ({ parent }) => !parent?.showHotspots
     }
   ],
   preview: {

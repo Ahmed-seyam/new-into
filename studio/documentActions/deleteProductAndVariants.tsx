@@ -1,35 +1,31 @@
 /**
- * Custom document action
- *
- * Learn more: https://www.sanity.io/docs/document-actions
+ * Custom document action compatible with Sanity v4
  */
-import { useRouter } from '@sanity/base/router'
 import { TrashIcon } from '@sanity/icons'
 import { Stack, Text, useToast } from '@sanity/ui'
-import sanityClient from 'part:@sanity/base/client'
 import React, { useState } from 'react'
 import { SANITY_API_VERSION } from '../constants'
+import { client } from '../lib/client'
 
 type Props = {
-  draft?: Record<string, any> // Sanity Document
+  draft?: Record<string, any>
   onComplete: () => void
-  published?: Record<string, any> // Sanity Document
+  published?: Record<string, any>
   type: string
 }
 
 const deleteProductAndVariants = (props: Props) => {
   const { draft, onComplete, published } = props
-
   const [dialogOpen, setDialogOpen] = useState(false)
 
-  const router = useRouter()
   const toast = useToast()
 
   return {
     color: 'danger',
     dialog: dialogOpen && {
+      type: 'confirm',
       color: 'danger',
-      header: 'Delete current product and associated variants?',
+      title: 'Delete current product and associated variants?',
       message: (
         <Stack space={4}>
           <Text>Delete the current product and all associated variants in your dataset.</Text>
@@ -40,52 +36,40 @@ const deleteProductAndVariants = (props: Props) => {
       onConfirm: async () => {
         const productId = published?.store?.id
 
-        // Find product variant documents with matching Shopify Product ID
+        // Fetch product variant IDs
         let productVariantIds: string[] = []
         if (productId) {
-          productVariantIds = await sanityClient
+          productVariantIds = await client
             .withConfig({ apiVersion: SANITY_API_VERSION })
             .fetch(
-              `*[
-                _type == "productVariant"
-                && store.productId == $productId
-              ]._id`,
-              { productId: productId }
+              `*[ _type == "productVariant" && store.productId == $productId ]._id`,
+              { productId }
             )
         }
 
-        // Delete current document (including draft)
-        const transaction = sanityClient.transaction()
-        if (published?._id) {
-          transaction.delete(published._id)
-        }
-        if (draft?._id) {
-          transaction.delete(draft._id)
-        }
+        // Prepare transaction
+        const transaction = client.transaction()
+        if (published?._id) transaction.delete(published._id)
+        if (draft?._id) transaction.delete(draft._id)
 
-        // Delete all product variants with matching IDs
-        productVariantIds?.forEach(documentId => {
-          if (documentId) {
-            transaction.delete(documentId)
-            transaction.delete(`drafts.${documentId}`)
-          }
+        // Delete all product variants including drafts
+        productVariantIds.forEach(id => {
+          transaction.delete(id)
+          transaction.delete(`drafts.${id}`)
         })
 
         try {
           await transaction.commit()
-          // Navigate back to products root
-          router.navigateUrl('/desk/products')
-        } catch (err) {
+          window.location.href  = '/desk/products'
+        } catch (err: any) {
           toast.push({
             status: 'error',
-            title: err?.message
+            title: err?.message || 'Something went wrong'
           })
         } finally {
-          // Signal that the action is complete
           onComplete()
         }
-      },
-      type: 'confirm'
+      }
     },
     icon: TrashIcon,
     label: 'Delete',

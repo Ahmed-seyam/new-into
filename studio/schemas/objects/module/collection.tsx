@@ -8,37 +8,35 @@ export default {
   type: 'object',
   icon: PackageIcon,
   fields: [
-    // Collection
     {
       name: 'collection',
       title: 'Collection',
       type: 'reference',
       weak: true,
       to: [{ type: 'collection' }],
-      validation: Rule => Rule.required()
+      validation: (Rule: any) => Rule.required(),
     },
-    // Show background
     {
       name: 'showBackground',
       title: 'Show background',
       type: 'boolean',
       description: 'Use Shopify collection image as background (if available)',
-      initialValue: false
-    }
+      initialValue: false,
+    },
   ],
   preview: {
     select: {
       collectionTitle: 'collection.store.title',
       imageUrl: 'collection.store.imageUrl',
-      isDeleted: 'collection.store.isDeleted'
+      isDeleted: 'collection.store.isDeleted',
     },
-    prepare(selection) {
+    prepare(selection: { collectionTitle?: string; imageUrl?: string; isDeleted?: boolean }) {
       const { collectionTitle, imageUrl, isDeleted } = selection
       return {
         media: <ShopifyDocumentStatus isDeleted={isDeleted} type="collection" url={imageUrl} />,
         subtitle: 'Collection',
-        title: collectionTitle
+        title: collectionTitle,
       }
-    }
-  }
+    },
+  },
 }

@@ -1,72 +1,54 @@
-import { FormField } from '@sanity/base/components'
-import PatchEvent, { set, unset } from '@sanity/form-builder/PatchEvent'
-import { Marker, Path } from '@sanity/types'
 import { TextInput } from '@sanity/ui'
 import { uuid } from '@sanity/uuid'
 import get from 'lodash.get'
-import { withDocument } from 'part:@sanity/form-builder'
-import React, { forwardRef, RefObject, useCallback } from 'react'
+import React, { forwardRef, useCallback } from 'react'
+import { ObjectInputProps, set, unset, StringInputProps } from 'sanity'
 
-// TODO: use correct type
-type Props = {
-  markers: Marker[]
-  onBlur: () => void
-  onChange: (event: any) => void
-  onFocus: (path: Path) => void
-  type: any
-  value: any
+type Props = StringInputProps & {
+  schemaType: {
+    options?: {
+      field?: string
+    }
+  }
 }
 
-const PlaceholderStringInput = forwardRef((props: Props, ref: RefObject<HTMLInputElement>) => {
+const PlaceholderStringInput = forwardRef<HTMLInputElement, Props>((props, ref) => {
   const {
-    compareValue,
-    document,
-    markers,
-    onBlur,
+    elementProps,
     onChange,
-    onFocus,
-    presence,
-    readOnly,
-    type,
+    schemaType,
+    validation,
     value
   } = props
 
+  // Access document from props
+  const document = (props as any).document
+
   const handleChange = useCallback(
-    // useCallback will help with performance
-    event => {
-      const inputValue = event.currentTarget.value // get current value
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      const inputValue = event.currentTarget.value
 
       // if the value exists, set the data, if not, unset the data
-      onChange(PatchEvent.from(inputValue ? set(inputValue) : unset()))
+      onChange(inputValue ? set(inputValue) : unset())
     },
     [onChange]
   )
 
-  const proxyValue = get(document, type?.options?.field)
-
+  const proxyValue = get(document, schemaType?.options?.field)
   const inputId = uuid()
 
   return (
-    <FormField
-      compareValue={compareValue}
-      description={type?.description}
-      inputId={inputId}
-      markers={markers}
-      presence={presence}
-      title={type?.title}
-    >
-      <TextInput
-        defaultValue={value}
-        id={inputId}
-        onBlur={onBlur}
-        onChange={handleChange}
-        onFocus={onFocus}
-        placeholder={proxyValue}
-        readOnly={readOnly}
-        ref={ref}
-      />
-    </FormField>
+    <TextInput
+      {...elementProps}
+      defaultValue={value}
+      id={inputId}
+      onChange={handleChange}
+      placeholder={proxyValue}
+      ref={ref}
+    />
   )
 })
 
-export default withDocument(PlaceholderStringInput)
+PlaceholderStringInput.displayName = 'PlaceholderStringInput'
+
+export default PlaceholderStringInput

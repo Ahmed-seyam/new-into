@@ -5,7 +5,7 @@ import ProductVariantHiddenInput from '../../components/inputs/ProductVariantHid
 import ShopifyDocumentStatus from '../../components/media/ShopifyDocumentStatus'
 
 export default {
-  // HACK: Required to hide 'create new' button in desk structure
+  // Hide 'create new' button in desk structure
   __experimental_actions: [/*'create',*/ 'update', /*'delete',*/ 'publish'],
   name: 'productVariant',
   title: 'Product variant',
@@ -15,36 +15,32 @@ export default {
     {
       name: 'shopifySync',
       title: 'Shopify sync',
-      icon: ShopifyIcon
-    }
+      icon: ShopifyIcon,
+    },
   ],
   fields: [
-    // Product variant hidden status
     {
       name: 'hidden',
       type: 'string',
-      inputComponent: ProductVariantHiddenInput,
-      hidden: ({ parent }) => {
+      component: ProductVariantHiddenInput,
+      hidden: ({ parent }: { parent?: any }) => {
         const isDeleted = parent?.store?.isDeleted
-
         return !isDeleted
-      }
+      },
     },
-    // Title (proxy)
     {
       title: 'Title',
       name: 'titleProxy',
       type: 'proxyString',
-      options: { field: 'store.title' }
+      options: { field: 'store.title' },
     },
-    // Shopify product variant
     {
       name: 'store',
       title: 'Shopify',
       description: 'Variant data from Shopify (read-only)',
       type: 'shopifyProductVariant',
-      group: 'shopifySync'
-    }
+      group: 'shopifySync',
+    },
   ],
   preview: {
     select: {
@@ -52,9 +48,15 @@ export default {
       previewImageUrl: 'store.previewImageUrl',
       sku: 'store.sku',
       status: 'store.status',
-      title: 'store.title'
+      title: 'store.title',
     },
-    prepare(selection) {
+    prepare(selection: {
+      isDeleted?: boolean
+      previewImageUrl?: string
+      sku?: string
+      status?: string
+      title?: string
+    }) {
       const { isDeleted, previewImageUrl, sku, status, title } = selection
 
       return {
@@ -67,8 +69,8 @@ export default {
           />
         ),
         subtitle: sku,
-        title
+        title,
       }
-    }
-  }
+    },
+  },
 }

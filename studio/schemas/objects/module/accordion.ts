@@ -8,7 +8,6 @@ export default {
   type: 'object',
   icon: StackCompactIcon,
   fields: [
-    // Groups
     {
       name: 'groups',
       title: 'Groups',
@@ -24,7 +23,7 @@ export default {
               name: 'title',
               title: 'Title',
               type: 'string',
-              validation: Rule => Rule.required()
+              validation: (Rule: any) => Rule.required(),
             },
             {
               name: 'body',
@@ -32,73 +31,52 @@ export default {
               type: 'array',
               of: [
                 {
+                  type: 'block',
                   lists: [],
+                  styles: [],
                   marks: {
                     annotations: [
-                      // Email
-                      {
-                        name: 'annotationLinkEmail',
-                        type: 'annotationLinkEmail'
-                      },
-                      // Internal link
-                      {
-                        name: 'annotationLinkInternal',
-                        type: 'annotationLinkInternal'
-                      },
-                      // URL
-                      {
-                        name: 'annotationLinkExternal',
-                        type: 'annotationLinkExternal'
-                      }
+                      { name: 'annotationLinkEmail', type: 'annotationLinkEmail' },
+                      { name: 'annotationLinkInternal', type: 'annotationLinkInternal' },
+                      { name: 'annotationLinkExternal', type: 'annotationLinkExternal' },
                     ],
                     decorators: [
-                      {
-                        title: 'Italic',
-                        value: 'em'
-                      },
-                      {
-                        title: 'Strong',
-                        value: 'strong'
-                      }
-                    ]
+                      { title: 'Italic', value: 'em' },
+                      { title: 'Strong', value: 'strong' },
+                    ],
                   },
-                  // Regular styles
-                  styles: [],
-                  // Paragraphs
-                  type: 'block'
-                }
+                },
               ],
-              validation: Rule => Rule.required()
-            }
+              validation: (Rule: any) => Rule.required(),
+            },
           ],
           preview: {
             select: {
               body: 'body',
-              title: 'title'
+              title: 'title',
             },
-            prepare(selection) {
+            prepare(selection: { body?: any[]; title?: string }) {
               const { body, title } = selection
               return {
-                subtitle: body && blocksToText(body),
-                title
+                subtitle: body ? blocksToText(body) : '',
+                title,
               }
-            }
-          }
-        }
-      ]
-    }
+            },
+          },
+        },
+      ],
+    },
   ],
   preview: {
     select: {
       groupCount: 'groups.length',
-      url: 'url'
     },
-    prepare(selection) {
+    prepare(selection: { groupCount?: number }) {
       const { groupCount } = selection
       return {
         subtitle: 'Accordion',
-        title: groupCount ? pluralize('group', groupCount, true) : 'No groups'
+        title: groupCount ? pluralize('group', groupCount, true) : 'No groups',
       }
-    }
-  }
+    },
+  },
 }

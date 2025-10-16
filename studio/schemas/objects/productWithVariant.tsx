@@ -1,76 +1,59 @@
 import { TagIcon } from '@sanity/icons'
-import sanityClient from 'part:@sanity/base/client'
+import { defineType, defineField } from 'sanity'
 import pluralize from 'pluralize'
 import React from 'react'
 import ShopifyDocumentStatus from '../../components/media/ShopifyDocumentStatus'
 import { SANITY_API_VERSION } from '../../constants'
 import { getPriceRange } from '../../utils/getPriceRange'
+import { client } from '../../lib/client'
 
-export default {
+export default defineType({
   name: 'productWithVariant',
   title: 'Product with variant',
   type: 'object',
   icon: TagIcon,
   fields: [
-    {
+    defineField({
       name: 'product',
       type: 'reference',
       to: [{ type: 'product' }],
-      weak: true
-    },
-    {
+      weak: true,
+    }),
+    defineField({
       name: 'variant',
       type: 'reference',
       to: [{ type: 'productVariant' }],
       weak: true,
       description: 'First variant will be selected if left empty',
       options: {
-        filter: ({ parent }) => {
+        filter: ({ parent }: any) => {
           const productId = parent?.product?._ref
-          const shopifyProductId = Number(productId?.replace('shopifyProduct-', ''))
+          if (!productId) return undefined
 
-          if (!shopifyProductId) {
-            return { filter: '', params: {} }
-          }
-
-          // TODO: once variants are correctly marked as deleted, this could be made a little more efficient
-          // e.g. filter: 'store.productId == $shopifyProductId && !store.isDeleted',
           return {
-            filter: `_id in *[_id == $shopifyProductId][0].store.variants[]._ref`,
-            params: {
-              shopifyProductId: productId
-            }
+            filter: `_id in *[_id == $productId][0].store.variants[]._ref`,
+            params: { productId },
           }
-        }
+        },
       },
-      hidden: ({ parent }) => {
-        const productSelected = parent?.product
-        return !productSelected
-      },
-      validation: Rule =>
-        Rule.custom(async (value, { parent }) => {
-          // Selected product in adjacent `product` field
+      hidden: ({ parent }) => !parent?.product,
+      validation: (Rule) =>
+        Rule.custom(async (value, { parent }: any) => {
           const productId = parent?.product?._ref
-
-          // Selected product variant
           const productVariantId = value?._ref
 
-          if (!productId || !productVariantId) {
-            return true
-          }
+          if (!productId || !productVariantId) return true
 
-          // If both product + product variant are specified,
-          // check to see if `product` references this product variant.
-          const result = await sanityClient
+          const result = await client
             .withConfig({ apiVersion: SANITY_API_VERSION })
-            .fetch(`*[_id == $productId && references($productVariantId)][0]._id`, {
-              productId,
-              productVariantId
-            })
+            .fetch(
+              `*[_id == $productId && references($productVariantId)][0]._id`,
+              { productId, productVariantId }
+            )
 
           return result ? true : 'Invalid product variant'
-        })
-    }
+        }),
+    }),
   ],
   preview: {
     select: {
@@ -83,7 +66,7 @@ export default {
       title: 'product.store.title',
       variantCount: 'product.store.variants.length',
       variantPreviewImageUrl: 'variant.store.previewImageUrl',
-      variantTitle: 'variant.store.title'
+      variantTitle: 'variant.store.title',
     },
     prepare(selection) {
       const {
@@ -96,28 +79,22 @@ export default {
         title,
         variantCount,
         variantPreviewImageUrl,
-        variantTitle
+        variantTitle,
       } = selection
 
       const productVariantTitle = variantTitle || defaultVariantTitle
 
-      let previewTitle = [title]
-      if (productVariantTitle) {
-        previewTitle.push(`[${productVariantTitle}]`)
-      }
+      const previewTitle = [title]
+      if (productVariantTitle) previewTitle.push(`[${productVariantTitle}]`)
 
-      let description = [
+      const description = [
         variantCount ? pluralize('variant', variantCount, true) : 'No variants',
-        optionCount ? pluralize('option', optionCount, true) : 'No options'
+        optionCount ? pluralize('option', optionCount, true) : 'No options',
       ]
 
       let subtitle = getPriceRange(priceRange)
-      if (status !== 'active') {
-        subtitle = '(Unavailable in Shopify)'
-      }
-      if (isDeleted) {
-        subtitle = '(Deleted from Shopify)'
-      }
+      if (status !== 'active') subtitle = '(Unavailable in Shopify)'
+      if (isDeleted) subtitle = '(Deleted from Shopify)'
 
       return {
         media: (
@@ -130,8 +107,8 @@ export default {
         ),
         description: description.join(' / '),
         subtitle,
-        title: previewTitle.join(' ')
+        title: previewTitle.join(' '),
       }
-    }
-  }
-}
+    },
+  },
+})

@@ -1,8 +1,8 @@
-import React from 'react';
-import HotspotArray from 'sanity-plugin-hotspot-array';
+import React from 'react'
+import { imageHotspotArrayPlugin } from 'sanity-plugin-hotspot-array'
 
-import ProductTooltip from '../../components/hotspots/ProductTooltip';
-import ShopifyDocumentStatus from '../../components/media/ShopifyDocumentStatus';
+import ProductTooltip from '../../components/hotspots/ProductTooltip'
+import ShopifyDocumentStatus from '../../components/media/ShopifyDocumentStatus'
 
 export default {
   name: 'productHotspots',
@@ -12,7 +12,7 @@ export default {
     {
       name: 'spot',
       type: 'object',
-      fieldsets: [{name: 'position', options: {columns: 2}}],
+      fieldsets: [{ name: 'position', options: { columns: 2 } }],
       fields: [
         {
           name: 'productWithVariant',
@@ -22,7 +22,6 @@ export default {
         {
           name: 'x',
           type: 'number',
-          // readOnly: true,
           fieldset: 'position',
           initialValue: 50,
           validation: (Rule) => Rule.required().min(0).max(100),
@@ -30,7 +29,6 @@ export default {
         {
           name: 'y',
           type: 'number',
-          // readOnly: true,
           fieldset: 'position',
           initialValue: 50,
           validation: (Rule) => Rule.required().min(0).max(100),
@@ -56,7 +54,7 @@ export default {
             variantPreviewImageUrl,
             x,
             y,
-          } = selection;
+          } = selection
           return {
             media: (
               <ShopifyDocumentStatus
@@ -68,15 +66,15 @@ export default {
             ),
             title: productTitle,
             subtitle: x && y ? `[${x}%, ${y}%]` : `No position set`,
-          };
+          }
         },
       },
     },
   ],
-  inputComponent: HotspotArray,
+  component: imageHotspotArrayPlugin, // <-- use named export
   options: {
     hotspotImagePath: 'image',
     hotspotTooltip: ProductTooltip,
     imageHotspotPathRoot: 'parent',
   },
-};
+}

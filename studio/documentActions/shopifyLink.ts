@@ -1,7 +1,7 @@
 /**
- * Custom document action
+ * Custom document action for Sanity v4
  *
- * Learn more: https://www.sanity.io/docs/document-actions
+ * Opens the corresponding Shopify URL for a collection, product, or product variant.
  */
 import { EarthGlobeIcon } from '@sanity/icons'
 import { collectionUrl, productUrl, productVariantUrl } from '../utils/shopifyUrls'
@@ -17,21 +17,19 @@ export default (props: Props) => {
   const isShopifyDocument = ['collection', 'product', 'productVariant'].includes(type)
 
   // Hide action if:
-  // - No published document was found
-  // - Document type is not a Shopify document (collection, product or product variant)
+  // - No published document
+  // - Document type is not Shopify-related
   // - Document has been deleted from Shopify
   if (!published || !isShopifyDocument || published?.store?.isDeleted) {
     return null
   }
 
-  let url
+  let url: string | undefined
   if (type === 'collection') {
     url = collectionUrl(published?.store?.id)
-  }
-  if (type === 'product') {
+  } else if (type === 'product') {
     url = productUrl(published?.store?.id)
-  }
-  if (type === 'productVariant') {
+  } else if (type === 'productVariant') {
     url = productVariantUrl(published?.store?.productId, published?.store?.id)
   }
 

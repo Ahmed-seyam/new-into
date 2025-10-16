@@ -13,7 +13,7 @@ export default {
       title: 'Images',
       type: 'array',
       of: [{ type: 'module.image' }],
-      validation: Rule => Rule.required().max(2)
+      validation: (Rule: any) => Rule.required().max(2),
     },
     // Full width
     {
@@ -22,7 +22,8 @@ export default {
       type: 'boolean',
       description: 'Display single image at full width (on larger breakpoints)',
       initialValue: false,
-      hidden: ({ parent }) => parent?.modules.length > 1
+      hidden: ({ parent }: { parent?: { modules?: any[] } }) =>
+        parent?.modules?.length > 1,
     },
     // Vertical alignment
     {
@@ -34,34 +35,26 @@ export default {
         direction: 'horizontal',
         layout: 'radio',
         list: [
-          {
-            title: 'Top',
-            value: 'top'
-          },
-          {
-            title: 'Center',
-            value: 'center'
-          },
-          {
-            title: 'Bottom',
-            value: 'bottom'
-          }
-        ]
+          { title: 'Top', value: 'top' },
+          { title: 'Center', value: 'center' },
+          { title: 'Bottom', value: 'bottom' },
+        ],
       },
-      hidden: ({ parent }) => !parent?.modules || parent?.modules.length < 2,
-      validation: Rule => Rule.required()
-    }
+      hidden: ({ parent }: { parent?: { modules?: any[] } }) =>
+        !parent?.modules || parent?.modules.length < 2,
+      validation: (Rule: any) => Rule.required(),
+    },
   ],
   preview: {
     select: {
-      imageCount: 'modules.length'
+      imageCount: 'modules.length',
     },
-    prepare(selection) {
+    prepare(selection: { imageCount?: number }) {
       const { imageCount } = selection
       return {
         subtitle: 'Images',
-        title: imageCount ? pluralize('image', imageCount, true) : 'No images'
+        title: imageCount ? pluralize('image', imageCount, true) : 'No images',
       }
-    }
-  }
+    },
+  },
 }

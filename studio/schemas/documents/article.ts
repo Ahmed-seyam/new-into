@@ -1,6 +1,5 @@
-import {DocumentIcon} from '@sanity/icons';
-
-import {validateSlug} from '../../utils/validateSlug';
+import { DocumentIcon } from '@sanity/icons'
+import { validateSlug } from '../../utils/validateSlug'
 
 export default {
   name: 'article',
@@ -28,24 +27,24 @@ export default {
       name: 'title',
       title: 'Title',
       type: 'string',
-      validation: (Rule) => Rule.required(),
+      validation: (Rule: any) => Rule.required(),
     },
     // Slug
     {
       name: 'slug',
       type: 'slug',
-      options: {source: 'title'},
+      options: { source: 'title' },
       validation: validateSlug,
     },
-    // Color theme
+    // Blog reference
     {
       name: 'blog',
       title: 'Blog',
       type: 'reference',
-      to: [{type: 'blog'}],
+      to: [{ type: 'blog' }],
       group: 'editorial',
     },
-    // Body
+    // Body content
     {
       name: 'body',
       title: 'Body',
@@ -58,11 +57,12 @@ export default {
       type: 'body',
       group: 'editorial',
     },
+    // Images
     {
       name: 'images',
       title: 'Images',
       type: 'array',
-      of: [{type: 'editorialImage'}],
+      of: [{ type: 'editorialImage' }],
       group: 'editorial',
     },
     // SEO
@@ -75,17 +75,15 @@ export default {
   ],
   preview: {
     select: {
-      active: 'active',
       seoImage: 'seo.image',
       title: 'title',
     },
-    prepare(selection) {
-      const {seoImage, title} = selection;
-
+    prepare(selection: { seoImage?: any; title?: string }) {
+      const { seoImage, title } = selection
       return {
         media: seoImage,
         title,
-      };
+      }
     },
   },
-};
+}

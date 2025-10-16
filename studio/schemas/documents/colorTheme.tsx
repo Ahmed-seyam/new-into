@@ -10,48 +10,44 @@ export default {
   groups: [
     {
       name: 'shopifySync',
-      title: 'Shopify sync'
-    }
+      title: 'Shopify sync',
+    },
   ],
   fields: [
-    // Title
     {
       name: 'title',
       title: 'Title',
       type: 'string',
-      validation: Rule => Rule.required()
+      validation: (Rule: any) => Rule.required(),
     },
-    // Text color
     {
       name: 'text',
       title: 'Text',
       type: 'color',
       options: { disableAlpha: true },
-      validation: Rule => Rule.required()
+      validation: (Rule: any) => Rule.required(),
     },
-    // Background color
     {
       name: 'background',
       title: 'Background',
       type: 'color',
       options: { disableAlpha: true },
-      validation: Rule => Rule.required()
-    }
+      validation: (Rule: any) => Rule.required(),
+    },
   ],
   preview: {
     select: {
       backgroundColor: 'background.hex',
       textColor: 'text.hex',
-      title: 'title'
+      title: 'title',
     },
-    prepare(selection) {
+    prepare(selection: { backgroundColor?: string; textColor?: string; title?: string }) {
       const { backgroundColor, textColor, title } = selection
-
       return {
         media: <ColorTheme background={backgroundColor} text={textColor} />,
         subtitle: `${textColor || '(No color)'} / ${backgroundColor || '(No color)'}`,
-        title
+        title,
       }
-    }
-  }
+    },
+  },
 }

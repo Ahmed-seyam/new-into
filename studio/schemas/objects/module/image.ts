@@ -1,12 +1,12 @@
-import {ImageIcon} from '@sanity/icons';
+import { ImageIcon } from '@sanity/icons'
 
 const VARIANTS = [
-  {title: 'Simple', value: undefined},
+  { title: 'Simple', value: undefined },
   // {title: 'Caption', value: 'caption'},
   // {title: 'Call to action', value: 'callToAction'},
-  {title: 'Product hotspots', value: 'productHotspots'},
-  {title: 'Product grid', value: 'productGrid'},
-];
+  { title: 'Product hotspots', value: 'productHotspots' },
+  { title: 'Product grid', value: 'productGrid' },
+]
 
 export default {
   name: 'module.image',
@@ -19,8 +19,8 @@ export default {
       name: 'image',
       title: 'Image',
       type: 'image',
-      options: {hotspot: true},
-      validation: (Rule) => Rule.required(),
+      options: { hotspot: true },
+      validation: (Rule: any) => Rule.required(),
     },
     // Variant
     {
@@ -40,7 +40,7 @@ export default {
       title: 'Caption',
       type: 'text',
       rows: 2,
-      // hidden: ({ parent }) => parent.variant !== 'caption'
+      // hidden: ({ parent }) => parent.variant !== 'caption',
     },
     // Call to action
     {
@@ -48,36 +48,37 @@ export default {
       title: 'Call to action',
       type: 'object',
       fields: [
-        // Title
         {
           name: 'title',
           title: 'Title',
           type: 'string',
         },
-        // Link
         {
           name: 'links',
           title: 'Link',
           type: 'array',
-          of: [{type: 'linkInternal'}, {type: 'linkExternal'}],
-          validation: (Rule) => Rule.max(1),
+          of: [{ type: 'linkInternal' }, { type: 'linkExternal' }],
+          validation: (Rule: any) => Rule.max(1),
         },
       ],
-      hidden: ({parent}) => parent.variant !== 'callToAction',
+      hidden: ({ parent }: { parent?: Record<string, any> }) =>
+        parent?.variant !== 'callToAction',
     },
     // Product hotspots
     {
       name: 'productHotspots',
       title: 'Hotspots',
       type: 'productHotspots',
-      hidden: ({parent}) => parent.variant !== 'productHotspots',
+      hidden: ({ parent }: { parent?: Record<string, any> }) =>
+        parent?.variant !== 'productHotspots',
     },
-    // Product tags
+    // Product grid
     {
       name: 'productGrid',
       title: 'Products',
       type: 'array',
-      hidden: ({parent}) => parent.variant !== 'productGrid',
+      hidden: ({ parent }: { parent?: Record<string, any> }) =>
+        parent?.variant !== 'productGrid',
       of: [
         {
           name: 'productWithVariant',
@@ -93,16 +94,15 @@ export default {
       image: 'image',
       variant: 'variant',
     },
-    prepare(selection) {
-      const {fileName, image, variant} = selection;
-      const currentVariant = VARIANTS.find((v) => v.value === variant);
+    prepare(selection: { fileName?: string; image?: any; variant?: string }) {
+      const { fileName, image, variant } = selection
+      const currentVariant = VARIANTS.find((v) => v.value === variant)
 
       return {
         media: image,
-        subtitle:
-          'Image' + (currentVariant ? ` [${currentVariant.title}]` : ''),
+        subtitle: 'Image' + (currentVariant ? ` [${currentVariant.title}]` : ''),
         title: fileName,
-      };
+      }
     },
   },
-};
+}

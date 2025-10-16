@@ -1,9 +1,10 @@
-import S from '@sanity/desk-tool/structure-builder'
+import { StructureBuilder } from 'sanity/structure'
 
-// prettier-ignore
-export const colorThemes = S.listItem()
-  .title('Color themes')
-  .schemaType('colorTheme')
-  .child(
-    S.documentTypeList('colorTheme')
-  )
+export const colorThemes = (S: StructureBuilder) =>
+  S.listItem()
+    .title('Color themes')
+    .schemaType('colorTheme')
+    .child(
+      S.documentTypeList('colorTheme')
+        .title('Color Themes')
+    )

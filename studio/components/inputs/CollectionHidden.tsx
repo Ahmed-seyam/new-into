@@ -1,19 +1,20 @@
 import { SanityDocument } from '@sanity/client'
 import { WarningOutlineIcon } from '@sanity/icons'
 import { Box, Card, Flex, Stack, Text } from '@sanity/ui'
-import { withDocument } from 'part:@sanity/form-builder'
 import React, { forwardRef } from 'react'
 import { collectionUrl } from '../../utils/shopifyUrls'
+import { ObjectInputProps  } from 'sanity'
 
-type Props = {
-  document: SanityDocument
+type Props = ObjectInputProps & {
+  value?: any
 }
 
 const CollectionHiddenInput = forwardRef<HTMLDivElement, Props>((props, ref) => {
-  const { document } = props
+  const { value } = props
+  // Access document from renderDefault props or context
+  const document = (props as any).document as SanityDocument
 
   const shopifyCollectionUrl = collectionUrl(document?.store?.id)
-
   const isDeleted = document?.store?.isDeleted
 
   return (
@@ -35,7 +36,7 @@ const CollectionHiddenInput = forwardRef<HTMLDivElement, Props>((props, ref) => 
             <Box marginTop={4}>
               <Text size={1}>
                 →{' '}
-                <a href={shopifyCollectionUrl} target="_blank">
+                <a href={shopifyCollectionUrl} target="_blank" rel="noopener noreferrer">
                   View this collection on Shopify
                 </a>
               </Text>
@@ -47,4 +48,6 @@ const CollectionHiddenInput = forwardRef<HTMLDivElement, Props>((props, ref) => 
   )
 })
 
-export default withDocument(CollectionHiddenInput)
+CollectionHiddenInput.displayName = 'CollectionHiddenInput'
+
+export default CollectionHiddenInput

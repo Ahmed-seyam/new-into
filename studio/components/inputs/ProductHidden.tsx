@@ -1,16 +1,18 @@
 import { SanityDocument } from '@sanity/client'
 import { WarningOutlineIcon } from '@sanity/icons'
 import { Box, Card, Flex, Stack, Text } from '@sanity/ui'
-import { withDocument } from 'part:@sanity/form-builder'
 import React, { forwardRef } from 'react'
 import { productUrl } from '../../utils/shopifyUrls'
+import { ObjectInputProps } from 'sanity'
 
-type Props = {
-  document: SanityDocument
+type Props = ObjectInputProps & {
+  value?: any
 }
 
 const ProductHiddenInput = forwardRef<HTMLDivElement, Props>((props, ref) => {
-  const { document } = props
+  const { value } = props
+  // Access document from renderDefault props or context
+  const document = (props as any).document as SanityDocument
 
   const shopifyProductUrl = productUrl(document?.store?.id)
 
@@ -48,7 +50,7 @@ const ProductHiddenInput = forwardRef<HTMLDivElement, Props>((props, ref) => {
             <Box marginTop={4}>
               <Text size={1}>
                 →{' '}
-                <a href={shopifyProductUrl} target="_blank">
+                <a href={shopifyProductUrl} target="_blank" rel="noopener noreferrer">
                   View this product on Shopify
                 </a>
               </Text>
@@ -60,4 +62,6 @@ const ProductHiddenInput = forwardRef<HTMLDivElement, Props>((props, ref) => {
   )
 })
 
-export default withDocument(ProductHiddenInput)
+ProductHiddenInput.displayName = 'ProductHiddenInput'
+
+export default ProductHiddenInput

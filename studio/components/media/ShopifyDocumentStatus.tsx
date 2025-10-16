@@ -33,6 +33,7 @@ const ShopifyDocumentStatus = forwardRef<HTMLDivElement, Props>((props, ref) => 
         <img
           onError={handleImageError}
           src={`${url}&width=400`}
+          alt=""
           style={{
             height: '100%',
             left: 0,
@@ -76,5 +77,7 @@ const ShopifyDocumentStatus = forwardRef<HTMLDivElement, Props>((props, ref) => 
     </div>
   )
 })
+
+ShopifyDocumentStatus.displayName = 'ShopifyDocumentStatus'
 
 export default ShopifyDocumentStatus
