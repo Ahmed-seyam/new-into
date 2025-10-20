@@ -1,6 +1,7 @@
-import { CogIcon, PackageIcon } from '@sanity/icons'
+import {CogIcon, PackageIcon} from '@sanity/icons';
+import {CleanupDeletedButton} from '../../components/btns/CleanupDeletedButton';
 
-const TITLE = 'Settings'
+const TITLE = 'Settings';
 
 export default {
   name: 'settings',
@@ -11,20 +12,24 @@ export default {
     {
       default: true,
       name: 'navigation',
-      title: 'Navigation'
+      title: 'Navigation',
     },
     {
       name: 'productOptions',
-      title: 'Product options'
+      title: 'Product options',
     },
     {
       name: 'notFoundPage',
-      title: '404 page'
+      title: '404 page',
     },
     {
       name: 'seo',
-      title: 'SEO'
-    }
+      title: 'SEO',
+    },
+    {
+      name: 'cleanUp',
+      title: 'clean up',
+    },
   ],
   fields: [
     // Menu
@@ -35,7 +40,7 @@ export default {
       group: 'navigation',
       options: {
         collapsed: false,
-        collapsible: true
+        collapsible: true,
       },
       fields: [
         // Links
@@ -54,21 +59,21 @@ export default {
                   name: 'title',
                   title: 'Title',
                   type: 'string',
-                  validation: Rule => Rule.required()
+                  validation: (Rule) => Rule.required(),
                 },
                 {
                   name: 'collectionLinks',
                   title: 'Collection links',
                   type: 'array',
-                  validation: Rule => Rule.unique().max(4),
+                  validation: (Rule) => Rule.unique().max(4),
                   of: [
                     {
                       name: 'collection',
                       type: 'reference',
                       weak: true,
-                      to: [{ type: 'collection' }]
-                    }
-                  ]
+                      to: [{type: 'collection'}],
+                    },
+                  ],
                 },
                 {
                   name: 'collectionProducts',
@@ -76,15 +81,15 @@ export default {
                   type: 'reference',
                   description: 'Products from this collection will be listed',
                   weak: true,
-                  to: [{ type: 'collection' }]
-                }
-              ]
+                  to: [{type: 'collection'}],
+                },
+              ],
             },
-            { type: 'linkInternal' },
-            { type: 'linkExternal' }
-          ]
-        }
-      ]
+            {type: 'linkInternal'},
+            {type: 'linkExternal'},
+          ],
+        },
+      ],
     },
     // Footer
     {
@@ -94,7 +99,7 @@ export default {
       group: 'navigation',
       options: {
         collapsed: false,
-        collapsible: true
+        collapsible: true,
       },
       fields: [
         // Links
@@ -102,7 +107,7 @@ export default {
           name: 'links',
           title: 'Links',
           type: 'array',
-          of: [{ type: 'linkInternal' }, { type: 'linkExternal' }]
+          of: [{type: 'linkInternal'}, {type: 'linkExternal'}],
         },
         // Text
         {
@@ -118,30 +123,30 @@ export default {
                   {
                     title: 'Email',
                     name: 'annotationLinkEmail',
-                    type: 'annotationLinkEmail'
+                    type: 'annotationLinkEmail',
                   },
                   // Internal link
                   {
                     title: 'Internal page',
                     name: 'annotationLinkInternal',
-                    type: 'annotationLinkInternal'
+                    type: 'annotationLinkInternal',
                   },
                   // URL
                   {
                     title: 'URL',
                     name: 'annotationLinkExternal',
-                    type: 'annotationLinkExternal'
-                  }
+                    type: 'annotationLinkExternal',
+                  },
                 ],
-                decorators: []
+                decorators: [],
               },
               // Block styles
-              styles: [{ title: 'Normal', value: 'normal' }],
-              type: 'block'
-            }
-          ]
-        }
-      ]
+              styles: [{title: 'Normal', value: 'normal'}],
+              type: 'block',
+            },
+          ],
+        },
+      ],
     },
     // Custom product options
     {
@@ -152,25 +157,40 @@ export default {
       of: [
         {
           name: 'customProductOption.color',
-          type: 'customProductOption.color'
+          type: 'customProductOption.color',
         },
         {
           name: 'customProductOption.size',
-          type: 'customProductOption.size'
-        }
+          type: 'customProductOption.size',
+        },
       ],
-      validation: Rule =>
-        Rule.custom(options => {
+      validation: (Rule) =>
+        Rule.custom((options) => {
           // Each product option type must have a unique title
           if (options) {
-            const uniqueTitles = new Set(options.map(option => option.title))
+            const uniqueTitles = new Set(options.map((option) => option.title));
             if (options.length > uniqueTitles.size) {
-              return 'Each product option type must have a unique title'
+              return 'Each product option type must have a unique title';
             }
           }
-          return true
-        })
+          return true;
+        }),
     },
+
+    {
+      name: 'cleanupDeleted',
+      title: 'Cleanup Deleted Shopify Documents',
+      type: 'string',
+      description:
+        'Delete products and collections marked as deleted in Shopify',
+      components: {
+        input: CleanupDeletedButton,
+      },
+      group: 'cleanUp',
+
+     
+    },
+
     // Not found page
     {
       name: 'notFoundPage',
@@ -182,13 +202,13 @@ export default {
           name: 'title',
           title: 'Title',
           type: 'string',
-          validation: Rule => Rule.required()
+          validation: (Rule) => Rule.required(),
         },
         {
           name: 'body',
           title: 'Body',
           type: 'text',
-          rows: 2
+          rows: 2,
         },
         {
           name: 'collection',
@@ -199,18 +219,18 @@ export default {
           to: [
             {
               name: 'collection',
-              type: 'collection'
-            }
-          ]
+              type: 'collection',
+            },
+          ],
         },
         // Color theme
         {
           name: 'colorTheme',
           title: 'Color theme',
           type: 'reference',
-          to: [{ type: 'colorTheme' }]
-        }
-      ]
+          to: [{type: 'colorTheme'}],
+        },
+      ],
     },
     // SEO
     {
@@ -221,32 +241,34 @@ export default {
       description: 'Defaults for every page',
       options: {
         collapsed: false,
-        collapsible: true
+        collapsible: true,
       },
       fields: [
         {
           name: 'title',
           title: 'Site title',
           type: 'string',
-          validation: Rule => Rule.required()
+          validation: (Rule) => Rule.required(),
         },
         {
           name: 'description',
           title: 'Description',
           type: 'text',
           rows: 2,
-          validation: Rule =>
-            Rule.max(150).warning('Longer descriptions may be truncated by search engines')
-        }
+          validation: (Rule) =>
+            Rule.max(150).warning(
+              'Longer descriptions may be truncated by search engines',
+            ),
+        },
       ],
-      validation: Rule => Rule.required()
-    }
+      validation: (Rule) => Rule.required(),
+    },
   ],
   preview: {
     prepare() {
       return {
-        title: TITLE
-      }
-    }
-  }
-}
+        title: TITLE,
+      };
+    },
+  },
+};
