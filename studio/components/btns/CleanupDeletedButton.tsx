@@ -52,31 +52,6 @@ export const CleanupDeletedButton = () => {
 
       console.log(`Found ${deletedCollections.length} deleted collections`);
 
-      //   // Delete products
-      //   for (const product of deletedProducts) {
-      //     try {
-      //       await client.delete(product._id)
-      //       results.push({
-      //         type: 'product',
-      //         id: product._id,
-      //         title: product.title || 'Unknown',
-      //         success: true,
-      //       })
-      //       console.log(`✅ Deleted product: ${product.title} (${product._id})`)
-      //     } catch (error) {
-      //       const errorMsg = `Failed to delete product ${product.title}: ${error}`
-      //       errors.push(errorMsg)
-      //       results.push({
-      //         type: 'product',
-      //         id: product._id,
-      //         title: product.title || 'Unknown',
-      //         success: false,
-      //         error: error instanceof Error ? error.message : 'Unknown error',
-      //       })
-      //       console.error(`❌ ${errorMsg}`)
-      //     }
-      //   }
-
       const BATCH_SIZE = 50;
 
       for (let i = 0; i < deletedProducts.length; i += BATCH_SIZE) {
