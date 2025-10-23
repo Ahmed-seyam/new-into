@@ -132,6 +132,8 @@ export default [
       'react/no-array-index-key': 'warn',
       'react/prop-types': 'off',
       'react/react-in-jsx-scope': 'off',
+            '@typescript-eslint/no-floating-promises': 'off',
+
     },
   },
   ...fixupConfigRules(

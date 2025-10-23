@@ -6,26 +6,52 @@ import tsconfigPaths from 'vite-tsconfig-paths';
 
 export default defineConfig({
   plugins: [hydrogen(), oxygen(), reactRouter(), tsconfigPaths()],
+
   build: {
-    // Allow a strict Content-Security-Policy
-    // withtout inlining assets as base64:
     assetsInlineLimit: 0,
   },
+
+  optimizeDeps: {
+    include: ['three'],
+    exclude: ['algoliasearch'],
+  },
+
+  resolve: {
+    alias: {
+      // Force browser builds
+      algoliasearch: 'algoliasearch/dist/builds/browser.js',
+      '@algolia/client-search': '@algolia/client-search/dist/builds/browser.js',
+      '@algolia/requester-node-http': '@algolia/requester-fetch',
+    },
+    conditions: ['worker', 'browser', 'module', 'import', 'default'],
+    mainFields: ['browser', 'module', 'main'],
+  },
+
   ssr: {
     optimizeDeps: {
-      /**
-       * Include dependencies here if they throw CJS<>ESM errors.
-       * For example, for the following error:
-       *
-       * > ReferenceError: module is not defined
-       * >   at /Users/.../node_modules/example-dep/index.js:1:1
-       *
-       * Include 'example-dep' in the array below.
-       * @see https://vitejs.dev/config/dep-optimization-options
-       */
-      include: ['set-cookie-parser', 'cookie', 'react-router'],
+      include: [
+        'set-cookie-parser',
+        'cookie',
+        'react-router',
+        '@sanity/client',
+        '@sanity/image-url',
+        'rxjs',
+      ],
     },
+    noExternal: ['three', /^@sanity/, /^rxjs/, /^algoliasearch/, /^@algolia/],
+    external: [
+      'http',
+      'https',
+      'url',
+      'stream',
+      'zlib',
+      'fs',
+      'path',
+      'crypto',
+      'buffer',
+    ],
   },
+
   server: {
     allowedHosts: ['.tryhydrogen.dev'],
   },

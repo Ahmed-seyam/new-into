@@ -73,18 +73,18 @@ type Pages = {
       "code": string;
     };
   };
-  "/sitemap.xml": {
-    params: {};
-  };
   "/pages/:handle": {
     params: {
       "handle": string;
     };
   };
-  "/robots.txt": {
+  "/sitemap.xml": {
     params: {};
   };
   "/blogs": {
+    params: {};
+  };
+  "/robots.txt": {
     params: {};
   };
   "/account": {
@@ -137,9 +137,9 @@ type Pages = {
 };
 
 type RouteFiles = {
-  "root.jsx": {
+  "root.tsx": {
     id: "root";
-    page: "/" | "/blogs/:blogHandle/:articleHandle" | "/api/:version/graphql.json" | "/sitemap/:type/:page.xml" | "/blogs/:blogHandle" | "/collections/:handle" | "/account/authorize" | "/collections" | "/policies/:handle" | "/products/:handle" | "/account/logout" | "/collections/all" | "/policies" | "/account/login" | "/discount/:code" | "/sitemap.xml" | "/pages/:handle" | "/robots.txt" | "/blogs" | "/account" | "/account/orders" | "/account/orders/:id" | "/account/addresses" | "/account/profile" | "/account/*" | "/search" | "/cart" | "/cart/:lines" | "/*" | "/graphiql" | "/subrequest-profiler" | "/.well-known/appspecific/com.chrome.devtools.json";
+    page: "/" | "/blogs/:blogHandle/:articleHandle" | "/api/:version/graphql.json" | "/sitemap/:type/:page.xml" | "/blogs/:blogHandle" | "/collections/:handle" | "/account/authorize" | "/collections" | "/policies/:handle" | "/products/:handle" | "/account/logout" | "/collections/all" | "/policies" | "/account/login" | "/discount/:code" | "/pages/:handle" | "/sitemap.xml" | "/blogs" | "/robots.txt" | "/account" | "/account/orders" | "/account/orders/:id" | "/account/addresses" | "/account/profile" | "/account/*" | "/search" | "/cart" | "/cart/:lines" | "/*" | "/graphiql" | "/subrequest-profiler" | "/.well-known/appspecific/com.chrome.devtools.json";
   };
   "routes/blogs.$blogHandle.$articleHandle.jsx": {
     id: "routes/blogs.$blogHandle.$articleHandle";
@@ -197,21 +197,21 @@ type RouteFiles = {
     id: "routes/discount.$code";
     page: "/discount/:code";
   };
-  "routes/[sitemap.xml].jsx": {
-    id: "routes/[sitemap.xml]";
-    page: "/sitemap.xml";
-  };
-  "routes/pages.$handle.jsx": {
+  "routes/pages.$handle.tsx": {
     id: "routes/pages.$handle";
     page: "/pages/:handle";
   };
-  "routes/[robots.txt].jsx": {
-    id: "routes/[robots.txt]";
-    page: "/robots.txt";
+  "routes/[sitemap.xml].tsx": {
+    id: "routes/[sitemap.xml]";
+    page: "/sitemap.xml";
   };
   "routes/blogs._index.jsx": {
     id: "routes/blogs._index";
     page: "/blogs";
+  };
+  "routes/[robots.txt].tsx": {
+    id: "routes/[robots.txt]";
+    page: "/robots.txt";
   };
   "routes/account.jsx": {
     id: "routes/account";
@@ -241,13 +241,13 @@ type RouteFiles = {
     id: "routes/account.$";
     page: "/account/*";
   };
-  "routes/_index.jsx": {
-    id: "routes/_index";
-    page: "/";
-  };
-  "routes/search.jsx": {
+  "routes/search.tsx": {
     id: "routes/search";
     page: "/search";
+  };
+  "routes/_index.tsx": {
+    id: "routes/_index";
+    page: "/";
   };
   "routes/cart.jsx": {
     id: "routes/cart";
@@ -261,23 +261,23 @@ type RouteFiles = {
     id: "routes/$";
     page: "/*";
   };
-  "../node_modules/@shopify/hydrogen/dist/vite/virtual-routes/layout.jsx": {
-    id: "/Users/adamsaxe/Desktop/intoarchive.com/node_modules/@shopify/hydrogen/dist/vite/virtual-routes/layout";
+  "../../../../..//Freelance/upwork/intoarchive.com-2025/node_modules/@shopify/hydrogen/dist/vite/virtual-routes/layout.jsx": {
+    id: "/Freelance/upwork/intoarchive.com-2025/node_modules/@shopify/hydrogen/dist/vite/virtual-routes/layout";
     page: "/graphiql" | "/subrequest-profiler" | "/.well-known/appspecific/com.chrome.devtools.json" | "/";
   };
-  "../node_modules/@shopify/hydrogen/dist/vite/virtual-routes/routes/graphiql.jsx": {
+  "../../../../..//Freelance/upwork/intoarchive.com-2025/node_modules/@shopify/hydrogen/dist/vite/virtual-routes/routes/graphiql.jsx": {
     id: "vite/virtual-routes/routes/graphiql";
     page: "/graphiql";
   };
-  "../node_modules/@shopify/hydrogen/dist/vite/virtual-routes/routes/subrequest-profiler.jsx": {
+  "../../../../..//Freelance/upwork/intoarchive.com-2025/node_modules/@shopify/hydrogen/dist/vite/virtual-routes/routes/subrequest-profiler.jsx": {
     id: "vite/virtual-routes/routes/subrequest-profiler";
     page: "/subrequest-profiler";
   };
-  "../node_modules/@shopify/hydrogen/dist/vite/virtual-routes/routes/[.]well-known.appspecific.com[.]chrome[.]devtools[.]json.jsx": {
+  "../../../../..//Freelance/upwork/intoarchive.com-2025/node_modules/@shopify/hydrogen/dist/vite/virtual-routes/routes/[.]well-known.appspecific.com[.]chrome[.]devtools[.]json.jsx": {
     id: "vite/virtual-routes/routes/[.]well-known.appspecific.com[.]chrome[.]devtools[.]json";
     page: "/.well-known/appspecific/com.chrome.devtools.json";
   };
-  "../node_modules/@shopify/hydrogen/dist/vite/virtual-routes/routes/index.jsx": {
+  "../../../../..//Freelance/upwork/intoarchive.com-2025/node_modules/@shopify/hydrogen/dist/vite/virtual-routes/routes/index.jsx": {
     id: "vite/virtual-routes/routes/index";
     page: "/";
   };
