@@ -4,22 +4,26 @@
     "target": "ES2022",
     "module": "ES2022",
     "moduleResolution": "Bundler",
+    "jsx": "react-jsx",
     "baseUrl": ".",
     "paths": {
-      "~/*": [
-        "app/*"
-      ]
+      "~/*": ["app/*"]
     }
   },
   "include": [
     "env.d.ts",
     "app/**/*.js",
+    "app/**/*.ts",
     "app/**/*.jsx",
+    "app/**/*.tsx",
     "app/**/*.d.ts",
     "*.js",
     "*.jsx",
     "*.d.ts",
     ".graphqlrc.js",
-    ".react-router/types/**/*"
+    ".react-router/types/**/*",
+    "tailwind.config.cjs",
+    "postcss.config.cjs",
+    "server.ts"
   ]
 }

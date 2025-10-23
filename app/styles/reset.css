@@ -1,3 +1,4 @@
+@reference "tailwindcss";
 body {
   font-family:
     system-ui,
@@ -52,7 +53,7 @@ p {
   line-height: 1.4;
 }
 
-a {
+a, a:link, a:visited {
   color: #000;
   text-decoration: none;
 }

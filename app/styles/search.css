@@ -1,0 +1,366 @@
+/* Header */
+@reference "tailwindcss";
+
+.header {
+  align-items: center;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 100px;
+  padding: 0.5rem 0.5rem;
+  text-align: center;
+}
+
+.header-title {
+  font-size: 38px;
+  font-weight: 300;
+  color: #21243d;
+}
+
+/* Containers */
+
+.container-filters {
+  flex: 1;
+  margin-right: 60px;
+  max-width: 260px;
+}
+
+.container-header {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  min-height: 80px;
+}
+
+.container-results {
+  flex: 3;
+}
+
+.container-options {
+  border-bottom: 1px solid #ebecf3;
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 15px;
+  padding: 30px 0;
+}
+
+.container-options .container-option:not(:first-child) {
+  margin-left: 48px;
+}
+
+.container-options select {
+  min-width: 100px;
+}
+
+.container-footer {
+  margin: 4rem 0;
+}
+
+/* Styles the SFFV highlightings */
+
+em {
+  font-style: normal;
+}
+
+em,
+mark {
+  background: rgba(226, 164, 0, 0.4);
+}
+
+/* Clear refinements container */
+
+.clear-filters {
+  align-items: center;
+  display: flex;
+}
+
+.clear-filters svg {
+  margin-right: 8px;
+}
+
+.aa-Form {
+  @apply flex w-full items-center gap-2;
+}
+
+.aa-InputWrapper {
+  @apply w-full;
+}
+
+#Autocomplete .ais-Hits-list {
+  @apply grid grid-cols-1 gap-3 gap-y-3;
+}
+
+.desktop-search-results .ais-Hits-list {
+  @apply grid grid-cols-1 gap-3 gap-y-3;
+}
+
+#Autocomplete .aa-Input {
+  @apply border-b border-b border-black p-0 focus:outline-none;
+  min-height: 32px;
+  line-height: 20px;
+}
+
+#Autocomplete .aa-InputWrapperPrefix,
+#Autocomplete .aa-InputWrapperSuffix {
+  @apply hidden;
+}
+
+/* Panel */
+
+.container-body .ais-Panel {
+  border-top: 1px solid #ebecf3;
+  padding-bottom: 2rem;
+  padding-top: 2rem;
+}
+
+.ais-Panel-header {
+  font-family: Hind, sans-serif;
+}
+
+/* Autocomplete */
+.aa-Input {
+  @apply w-full p-2;
+}
+
+/* Search box */
+
+.header .ais-SearchBox {
+  height: 50px;
+  width: 600px;
+}
+
+.header .ais-SearchBox .ais-SearchBox-input {
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 48px 0 rgba(0, 0, 0, 0.2);
+  font-family: Hind, sans-serif;
+  height: 50px;
+  /*
+    The "Hind" font family is vertically off-balance.
+    Adding 4px of padding top makes it more vertically aligned.
+  */
+  padding: 4px 48px 0 64px;
+}
+
+.header .ais-SearchBox-submit {
+  padding: 0 1rem 0 2rem;
+  width: 64px;
+}
+
+.header .ais-SearchBox .ais-SearchBox-input::placeholder {
+  color: rgba(33, 36, 61, 0.24);
+  opacity: 1; /* Firefox */
+}
+
+.ais-SearchBox-input:-ms-input-placeholder {
+  color: rgba(33, 36, 61, 0.24);
+}
+
+.ais-SearchBox-input::-ms-input-placeholder {
+  color: rgba(33, 36, 61, 0.24);
+}
+
+.ais-SearchBox-submit {
+  color: #e2a400;
+}
+
+.ais-RefinementList .ais-SearchBox-input {
+  font-family: Hind, sans-serif;
+  /*
+    The "Hind" font family is vertically off-balance.
+    Adding some padding top makes it more vertically aligned.
+  */
+  padding-top: 2px;
+}
+
+.ais-InfiniteHits-list {
+  @apply grid grid-cols-2 gap-3 gap-y-6 md:grid-cols-5 md:gap-6;
+}
+
+#Autocomplete .ais-InfiniteHits-list {
+  @apply grid grid-flow-row grid-cols-1;
+}
+
+.ais-InfiniteHits {
+  @apply flex flex-col items-center;
+}
+.ais-InfiniteHits-loadMore {
+  @apply mx-auto my-12 rounded-md bg-black p-4 text-white;
+}
+
+.ais-InfiniteHits-loadMore--disabled {
+  @apply bg-gray;
+}
+
+#Autocomplete .ais-InfiniteHits-loadMore {
+  @apply mb-6 mt-6;
+}
+
+/* Filters */
+.ais-CurrentRefinements-item {
+  @apply gap-1;
+}
+.ais-CurrentRefinements-label {
+  @apply hidden;
+}
+
+.ais-CurrentRefinements-categoryLabel {
+  @apply mr-2;
+}
+
+.ais-CurrentRefinements-category {
+  @apply flex whitespace-nowrap rounded-sm p-2 py-3;
+}
+
+.ais-CurrentRefinements-category:not([data-color]):not(.filter-1) {
+  @apply bg-gray hover:bg-gray-200;
+}
+
+.ais-CurrentRefinements-list {
+  @apply flex gap-1;
+}
+
+.ais-CurrentRefinements.ais-CurrentRefinements--noRefinement {
+  @apply hidden;
+}
+
+.ais-ClearRefinements {
+  @apply sticky right-0;
+  height: 40px;
+}
+
+.ais-ClearRefinements-button {
+  height: 40px;
+  @apply flex w-full items-center justify-center whitespace-nowrap rounded-sm border border-black bg-white p-2 py-3;
+}
+
+.ais-ClearRefinements-button:hover {
+  @apply active:bg-neutral-100;
+}
+
+.ais-ClearRefinements-button--disabled {
+  @apply hidden;
+}
+
+.mobile-filter-actions .ais-ClearRefinements-button--disabled {
+  @apply pointer-events-none flex opacity-20;
+}
+
+.clear-filters {
+  border-color: #747474;
+}
+
+/* Recommended */
+.auc-Recommend-list {
+  @apply grid grid-cols-2 gap-3  gap-y-6 md:grid-cols-4 md:gap-6 xl:grid-cols-5;
+}
+.auc-Recommend-title {
+  @apply hidden ;
+}
+
+/* Hits */
+
+.hit {
+  color: #21243d;
+  font-size: 14px;
+  line-height: 18px;
+}
+
+.hit h1 {
+  font-size: 14px;
+}
+
+.hit-category {
+  color: #21243d;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1;
+  margin-bottom: 8px;
+  opacity: 0.7;
+  text-transform: uppercase;
+}
+
+.hit-description {
+  margin-top: 2px;
+}
+
+.hit-info-container {
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+.hit-image-container {
+  align-items: center;
+  display: flex;
+  height: 270px;
+  justify-content: center;
+  margin: 4px;
+  width: 180px;
+}
+
+.hit-image {
+  height: auto;
+  max-height: 100%;
+  max-width: 100%;
+}
+
+.hit-em {
+  color: #e2a400;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+/* ToggleRefinement */
+
+.ais-ToggleRefinement-label {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: space-between;
+}
+
+.ais-ToggleRefinement-checkbox {
+  font: inherit;
+  margin-left: 1rem;
+  margin-right: 0;
+  position: relative;
+}
+
+.ais-ToggleRefinement-checkbox:checked::before {
+  color: #e2a400;
+}
+
+.ais-ToggleRefinement-checkbox::before {
+  align-items: center;
+  color: rgba(33, 36, 61, 0.32);
+  content: 'No';
+  display: flex;
+  font-size: 0.8rem;
+  height: 16px;
+  position: absolute;
+  right: 38px;
+}
+
+.ais-ToggleRefinement-checkbox:checked::before {
+  content: 'Yes';
+}
+
+.ais-ToggleRefinement-count {
+  display: none;
+}
+
+.ais-Pagination-list {
+  display: flex;
+}
+
+.aa-Panel {
+  overflow: auto;
+  left: 0 !important;
+  width: 100% !important;
+  top: 77px !important;
+  background: rgba(249, 249, 249, 1) !important;
+}
+
+.aa-SourceHeaderTitle {
+  background: rgba(249, 249, 249, 1) !important;
+}
