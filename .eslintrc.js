@@ -4,11 +4,12 @@ module.exports = {
     'node/no-missing-import': 'off',
     '@typescript-eslint/ban-ts-comment': 'off',
     '@typescript-eslint/naming-convention': 'off',
-    "prettier/prettier": [
-      "error",
+    '@typescript-eslint/no-floating-promises': 'off',
+    'prettier/prettier': [
+      'error',
       {
-        "endOfLine": "auto"
-      }
-    ]
+        endOfLine: 'auto',
+      },
+    ],
   },
 };
